@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { getCoordinatesByAddress } from '../api/kakao';
+import { convertToGrid } from '../utils/convertToGrid';
 import './SearchBar.css';
 
 const SearchBar = () => {
@@ -7,12 +8,15 @@ const SearchBar = () => {
 
     const handleSearch = async () => {
         if (!query.trim()) return;
-        const result = await getCoordinatesByAddress(query);
-        if (result) {
-            console.log('위도:', result.lat, '경도:', result.lon);
-        } else {
-            alert('지역을 찾을 수 없습니다.');
+
+        const coords = await getCoordinatesByAddress(query);
+        if (!coords) {
+            console.warn('좌표를 찾을 수 없습니다.');
+            return;
         }
+
+        const grid = convertToGrid(coords.lat, coords.lon);
+        console.log(`격자 좌표: x=${grid.x}, y=${grid.y}`);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -25,10 +29,10 @@ const SearchBar = () => {
         <div className="search-bar">
             <input
                 type="text"
+                placeholder="지역을 입력하세요 (예: 서울 강남구)"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="지역을 입력하세요 (예: 서울 강남구)"
             />
             <button onClick={handleSearch}>검색</button>
         </div>
