@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getCoordinatesByAddress } from '../api/kakao';
 import { convertToGrid } from '../utils/convertToGrid';
+import { getWeatherFromKMA } from '../api/kma';
 import './SearchBar.css';
 
 const SearchBar = () => {
@@ -17,6 +18,11 @@ const SearchBar = () => {
 
         const grid = convertToGrid(coords.lat, coords.lon);
         console.log(`격자 좌표: x=${grid.x}, y=${grid.y}`);
+
+        const kmaWeather = await getWeatherFromKMA(grid.x, grid.y);
+        if (kmaWeather) {
+            console.log('기상청 날씨:', kmaWeather);
+        }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

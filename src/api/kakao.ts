@@ -1,11 +1,7 @@
 import axios from 'axios';
+import type { KakaoAddress } from '../types/kakao';
 
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
-
-type KakaoAddress = {
-    x: string;
-    y: string;
-};
 
 export const getCoordinatesByAddress = async (address: string) => {
     try {
@@ -20,10 +16,17 @@ export const getCoordinatesByAddress = async (address: string) => {
         );
 
         const documents = response.data.documents;
-        if (documents.length === 0) throw new Error('주소 결과 없음');
 
-        const { x, y } = documents[0];
-        return { lat: parseFloat(y), lon: parseFloat(x) };
+        if (documents.length === 0) {
+            console.warn('주소 결과 없음');
+            return null;
+        }
+
+        const { x, y } = documents[0]; // x = 경도, y = 위도
+        return {
+            lat: parseFloat(y),
+            lon: parseFloat(x),
+        };
     } catch (error) {
         console.error('Kakao 주소 검색 오류:', error);
         return null;
