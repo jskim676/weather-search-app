@@ -6,6 +6,8 @@ import './SearchBar.css';
 import { parseUltraSrtFcst } from '../utils/parseUltraSrtFcst';
 import type { ParsedWeather } from '../types/weather';
 
+import WeatherInfo from './WeatherInfo';
+
 const SearchBar = () => {
     const [address, setAddress] = useState('');
     const [weather, setWeather] = useState<ParsedWeather | null>(null);
@@ -47,15 +49,7 @@ const SearchBar = () => {
             />
             <button onClick={handleSearch}>검색</button>
 
-            {weather && (
-                <div className="weather-result">
-                    <p>온도: {weather.temperature}℃</p>
-                    <p>습도: {weather.humidity}%</p>
-                    <p>하늘 상태: {weather.sky}</p>
-                    <p>날씨 요약: {weather.precipitation}</p>
-                    <p>풍속: {weather.windSpeed} m/s</p>
-                </div>
-            )}
+            {weather && <WeatherInfo weather={weather} />}
         </div>
     );
 };

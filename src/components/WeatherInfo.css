@@ -1,0 +1,18 @@
+.weather-info {
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 400px;
+    margin-top: 16px;
+}
+
+.weather-info h2 {
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.weather-info p {
+    margin: 4px 0;
+    font-size: 16px;
+}
